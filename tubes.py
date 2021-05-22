@@ -161,8 +161,8 @@ class Awan:
            
            
 class Score:
-    def __init__(self, skor):
-        self.skor = skor
+    def __init__(self, poin):
+        self.skor = poin
     def tampil(self, layar):
         self.text = font.render(f"Point: {self.skor}", True, (0, 0, 0))
         layar.blit(self.text, (1000 , 40))
