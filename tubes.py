@@ -157,3 +157,116 @@ class Awan:
             self.posisi_y_awan = randint(50, 100)
         layar.blit(self.gambar, (self.posisi_x_awan, self.posisi_y_awan))
         pygame.display.update()
+           
+           
+           
+class Score:
+    def __init__(self, skor):
+        self.skor = skor
+    def tampil(self, layar):
+        self.text = font.render(f"Point: {self.skor}", True, (0, 0, 0))
+        layar.blit(self.text, (1000 , 40))
+
+    
+
+def main():
+    global latar_x,latar_y,rintangan,kecepatan,muncul
+    muncul = 0
+    jumlah_mati = 0
+    run = True
+    kecepatan = 15
+    user = Dinosaurus()
+    waktu = pygame.time.Clock()
+    latar_x, latar_y = 0, 380
+    awan = Awan()
+    rintangan = []
+
+    def latar():
+        global latar_x,latar_y
+        lebar_gambar = gurun.get_width()
+        layar.blit(gurun, (latar_x, latar_y))
+        layar.blit(gurun, (lebar_gambar + latar_x, latar_y))
+        if latar_x <= -lebar_gambar:
+            layar.blit(gurun, (lebar_gambar + latar_x, latar_y))
+            latar_x = 0
+        latar_x -= kecepatan 
+
+    while run:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+               run = False
+
+        layar.fill((255, 255, 255))
+        masukan = pygame.key.get_pressed()
+        
+        user.tampil(layar)
+        user.update(masukan)
+        
+        if len(rintangan) == 0:
+            if randint(0, 2) == 0 :
+                rintangan.append(KaktusKecil(kaktus_kecil))
+                muncul += 1
+            elif randint(0, 2) == 1:
+                rintangan.append(KaktusBesar(kaktus_besar))
+                muncul += 1
+            elif randint(0, 2) == 2:
+                rintangan.append(Burung(burung_jahat))
+                muncul += 1
+            if muncul % 5 == 0 :
+                muncul += 10
+            elif muncul % 10 == 0 :
+                kecepatan += 10
+  
+        skor = Score(muncul)
+        skor.tampil(layar)
+
+        for halangan in rintangan:
+            halangan.tampil(layar)
+            halangan.update()
+            if user.dino_hit.colliderect(halangan.hit):
+                layar.fill((255, 255, 255))
+                layar.blit(berkahir, (lebar_layar // 3, tinggi_layar // 2))
+                pygame.display.update()
+                pygame.time.delay(2000)
+                jumlah_mati += 1
+
+        latar()
+        awan.tampil(layar)
+        
+        waktu.tick(45)
+        pygame.display.update()
+
+def menu(jumlah_mati):
+    global muncul
+    
+    run = True
+    while run:
+        layar.fill((255, 255, 255))
+        if jumlah_mati == 0:
+            text = font.render("Untuk memulai permainan, tekan 'R' pada papan ketik Anda", True, (0, 0, 0))
+            text_kedua = font.render("Untuk keluar permainan, tekan 'ESC' pada papan ketik Anda", True, (0, 0, 0))
+        elif jumlah_mati > 0:
+            text = font.render("Untuk memulai permainan lagi, tekan 'R' pada papan ketik Anda", True, (0, 0, 0))
+            text_kedua = font.render("Untuk keluar permainan, tekan 'ESC' pada papan ketik Anda", True, (0, 0, 0)) 
+            text_ketiga = font.render(f"Point Kamu = {muncul}", True, (0, 0 ,0))
+            text_ketigaRect = text_ketiga.get_rect()
+            text_ketigaRect.center = (lebar_layar // 2, tinggi_layar // 2)
+            layar.blit(text_ketiga, text_ketigaRect)
+            muncul = 0
+        textRect = text.get_rect()
+        text_keduaRect = text_kedua.get_rect()
+        textRect.center = (lebar_layar // 2, tinggi_layar // 2)
+        text_keduaRect.center = (lebar_layar // 2 , tinggi_layar // 2 + 60)
+        layar.blit(text, textRect)
+        layar.blit(text_kedua, text_keduaRect)
+        pygame.display.update()
+        pencetan = pygame.key.get_pressed()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+        if pencetan[pygame.K_r]:
+                main()
+        if pencetan[pygame.K_ESCAPE]:
+                run = False
+
+menu(jumlah_mati=0)
