@@ -129,6 +129,7 @@ class KaktusBesar(Rintangan):
         self.jenis = randint(0, 2)
         super().__init__(gambar, self.jenis)
         self.hit.y = 300
+
 class Burung(Rintangan):
     def __init__(self, gambar):
         self.jenis = 0
