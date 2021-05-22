@@ -141,4 +141,18 @@ class Burung(Rintangan):
             self.indeks = 0
         layar.blit(self.gambar[self.indeks // 5], self.hit )
         self.indeks += 1
+           
+class Awan:
+    def __init__(self):
+        self.posisi_x_awan = lebar_layar + randint(800, 1000)
+        self.posisi_y_awan = randint(30, 100)
+        self.gambar = berawan
+        self.lebar = self.gambar.get_width()
 
+    def tampil(self, layar):
+        self.posisi_x_awan -= kecepatan
+        if self.posisi_x_awan < - self.lebar:
+            self.posisi_x_awan = lebar_layar + randint(2500, 3000)
+            self.posisi_y_awan = randint(50, 100)
+        layar.blit(self.gambar, (self.posisi_x_awan, self.posisi_y_awan))
+        pygame.display.update()
