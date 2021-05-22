@@ -103,6 +103,7 @@ class Dinosaurus:
 
     def tampil(self, layar):
         layar.blit(self.gambar, (self.dino_hit.x, self.dino_hit.y))
+
 class Rintangan:
     def __init__(self, gambar, jenis):
         self.gambar = gambar
