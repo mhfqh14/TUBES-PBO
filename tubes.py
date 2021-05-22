@@ -129,3 +129,15 @@ class KaktusBesar(Rintangan):
         self.jenis = randint(0, 2)
         super().__init__(gambar, self.jenis)
         self.hit.y = 300
+class Burung(Rintangan):
+    def __init__(self, gambar):
+        self.jenis = 0
+        super().__init__(gambar, self.jenis)
+        self.hit.y = 250
+        self.indeks = 0
+    def tampil(self, layar):
+        if self.indeks >= 9:
+            self.indeks = 0
+        layar.blit(self.gambar[self.indeks // 5], self.hit )
+        self.indeks += 1
+
